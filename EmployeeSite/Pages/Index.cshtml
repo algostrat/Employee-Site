@@ -1,0 +1,150 @@
+﻿@page
+@using System.Globalization
+@using System.Data
+@model IndexModel
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h3>Employees</h3>
+<p>
+    <a asp-page="./Employees/Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Hire Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Employees)
+        {
+            string HireDate = item.HireDate.ToString("dd/MM/yyyy");
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @HireDate
+                </td>
+                <td>
+                    <a asp-page="./Employees/Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Employees/Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Employees/Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Activities</h3>
+<p>
+    <a asp-page="./Activities/Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Employee
+            </th>
+            <th>
+                Customer
+            </th>
+            <th>
+                Activity Description
+            </th>
+            <th>
+                Date Task Completed
+            </th>
+            <th>
+                Task Duration Minutes
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EmployeeActivity)
+        {
+
+            string TaskCompleted = item.DateTaskCompleted.ToString("dd/MM/yyyy");
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => (item.Employee.FirstName)) @Html.DisplayFor(modelItem => item.Employee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityDecription)
+                </td>
+                <td>
+                    @TaskCompleted
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskDurationMinutes)
+                </td>
+                <td>
+                    <a asp-page="./Activities/Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Activities/Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Activities/Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<h3>Report</h3>
+
+<table class="table">
+    <tr>
+        <td>Employee</td>
+        @{
+            string[] names = DateTimeFormatInfo.CurrentInfo.MonthNames;
+            string currentYear = DateTime.Now.Year.ToString();
+
+                @foreach (var month in names)
+            {
+                    <td>@month</td>
+            }
+        }
+    </tr>
+    <thead>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Report.AsEnumerable())
+        {
+
+            <tr>
+                <td>
+                    @item[0].ToString()
+                </td>
+                @for(int i=1;i<13;i++)
+                {
+                    <td>@item[i].ToString()</td>
+                }
+            </tr>
+
+        }
+
+    </tbody>
+</table>
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>*@
